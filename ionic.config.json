@@ -1,0 +1,7 @@
+{
+  "name": "AppImpacto",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
