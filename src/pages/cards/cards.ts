@@ -13,6 +13,13 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class CardsPage {
   cardItems: any[];
+  documentos: any[];
+  establecimientos: any[];
+  eventos: any[];
+  proyectos: any[];
+  rendiciones: any [];
+  usuarios: any[];
+  votaciones: any[];
 
   constructor(public navCtrl: NavController, public user: User, public api: Api, public toastCtrl: ToastController,
     public translateService: TranslateService, public loading: LoadingController) {
@@ -58,6 +65,7 @@ export class CardsPage {
   
     loader.present().then(() => {
       this.obtenerInicio(loader);
+      /*
       this.cardItems = [
         {
           user: {
@@ -87,6 +95,7 @@ export class CardsPage {
           content: 'Your scientists were so preoccupied with whether or not they could, that they didn\'t stop to think if they should.'
         }
       ];
+      */
     });
   }
 
@@ -95,6 +104,7 @@ export class CardsPage {
     var rolId = sessionStorage.getItem("ROL_ID");
     let dataGet = { InstId: instId, RolId: rolId, UsuId: 0, Tipo: '1' };
     let seq = this.api.post('Inicio', dataGet).share();
+    this.cardItems = [];
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
@@ -102,6 +112,42 @@ export class CardsPage {
       if (retorno != null){
         //this._loggedIn(retorno);
         //ahora procesamos los datos
+        if (retorno.Documentos){
+          if (retorno.Documentos.proposals){
+            this.documentos = retorno.Documentos.proposals;
+            var ultimo = this.documentos.pop();
+            var card = {
+              user: {
+                avatar: '',
+                name: 'Documentos'
+              },
+              date: ultimo.NombreUsuario,//poner la ultima fecha
+              image: '',
+              content: 'Existen ' + this.documentos.length + ' documentos creados.',
+              icon: 'document'
+            };
+            this.cardItems.push(card);
+
+          }
+        }
+        if (retorno.Establecimientos){
+          if (retorno.Establecimientos.proposals){
+            this.establecimientos = retorno.Establecimientos.proposals;
+            var ultimo = this.establecimientos.pop();
+            var card = {
+              user: {
+                avatar: '',
+                name: 'Establecimientos'
+              },
+              date: ultimo.NombreUsuario,//poner la ultima fecha
+              image: '',
+              content: 'Existen ' + this.establecimientos.length + ' establecimientos creados.',
+              icon: 'home'
+            };
+            this.cardItems.push(card);
+
+          }
+        }
         loader.dismiss();
       }
       else{

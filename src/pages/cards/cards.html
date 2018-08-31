@@ -14,7 +14,7 @@
     <ion-item>
       <ion-avatar item-start>
         <!--<img [src]="item.user.avatar">-->
-        <ion-icon name="document" style="font-size: 2em;"></ion-icon>
+        <ion-icon name="{{item.icon}}" style="font-size: 2em;"></ion-icon>
       </ion-avatar>
       <h2>{{item.user.name}}</h2>
       <p>{{item.date}}</p>
@@ -25,12 +25,13 @@
     </ion-card-content>
 
     <ion-row>
-      <ion-col>
+      <ion-col item-end>
         <button ion-button color="primary" clear small icon-start>
-            <ion-icon name='thumbs-up'></ion-icon>
-            12 Likes
+            <ion-icon name='arrow-dropright'></ion-icon>
+            Ir...
           </button>
       </ion-col>
+      <!--
       <ion-col>
         <button ion-button color="primary" clear small icon-start>
             <ion-icon name='text'></ion-icon>
@@ -42,6 +43,7 @@
           11h ago
         </ion-note>
       </ion-col>
+    -->
     </ion-row>
   </ion-card>
 </ion-content>
