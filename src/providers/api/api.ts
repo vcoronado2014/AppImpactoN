@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /**
@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class Api {
-  url: string = 'https://example.com/api/v1';
+  url: string = 'http://apps.asambleas.cl/api/';
 
   constructor(public http: HttpClient) {
   }
@@ -44,4 +44,14 @@ export class Api {
   patch(endpoint: string, body: any, reqOpts?: any) {
     return this.http.patch(this.url + '/' + endpoint, body, reqOpts);
   }
+  /*
+  postLogin(userInfo){
+    let url = this.url + '/login';
+    let iJson = JSON.stringify(userInfo);
+    return this.http.post(url, iJson, {
+      headers: new Headers({'Content-Type': 'application/json'})
+    })
+
+  }
+  */
 }

@@ -38,10 +38,19 @@ export class User {
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
+      let retorno = res;
+      if (retorno != null){
+        this._loggedIn(retorno);
+      }
+      else{
+        console.error('ERROR no autentificado');
+      }
+      /*
       if (res.status == 'success') {
         this._loggedIn(res);
       } else {
       }
+      */
     }, err => {
       console.error('ERROR', err);
     });
@@ -79,6 +88,19 @@ export class User {
    * Process a login/signup response to store user data
    */
   _loggedIn(resp) {
-    this._user = resp.user;
+    sessionStorage.setItem('USU_ID', resp.AutentificacionUsuario.Id);
+    sessionStorage.setItem('ROL_ID', resp.Rol.Id);
+    sessionStorage.setItem('ROL_NOMBRE', resp.Rol.Nombre);
+    sessionStorage.setItem('INST_ID', resp.Institucion.Id);
+    sessionStorage.setItem('INSTITUCION_NOMBRE', resp.Institucion.Nombre);
+    sessionStorage.setItem('PERSONA_NOMBRE', resp.Persona.Nombres + ' ' + resp.Persona.ApellidoPaterno + ' ' + resp.Persona.ApellidoMaterno);
+    sessionStorage.setItem('REG_ID', resp.Region.Id);
+    sessionStorage.setItem('REG_NOMBRE', resp.Region.Nombre);
+    sessionStorage.setItem('COM_ID', resp.Comuna.Id);
+    sessionStorage.setItem('COM_NOMBRE', resp.Comuna.Nombre);
+    sessionStorage.setItem('ROL_NOMBRE_INSTITUCION', resp.RolInstitucion.Nombre);
+    sessionStorage.setItem('ROL_ID_INSTITUCION', resp.RolInstitucion.IdOriginal);
+    //this._user = resp.user;
+    this._user = resp.AutentificacionUsuario.NombreUsuario;
   }
 }

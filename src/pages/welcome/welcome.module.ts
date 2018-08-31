@@ -3,10 +3,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
 
 import { WelcomePage } from './welcome';
+import { CardsPage } from './../cards/cards';
 
 @NgModule({
   declarations: [
-    WelcomePage,
+    WelcomePage
   ],
   imports: [
     IonicPageModule.forChild(WelcomePage),
