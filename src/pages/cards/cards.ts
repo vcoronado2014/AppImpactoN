@@ -124,7 +124,8 @@ export class CardsPage {
               date: ultimo.NombreUsuario,//poner la ultima fecha
               image: '',
               content: 'Existen ' + this.documentos.length + ' documentos creados.',
-              icon: 'document'
+              icon: 'document',
+              suma: this.documentos.length
             };
             this.cardItems.push(card);
 
@@ -142,7 +143,65 @@ export class CardsPage {
               date: ultimo.NombreUsuario,//poner la ultima fecha
               image: '',
               content: 'Existen ' + this.establecimientos.length + ' establecimientos creados.',
-              icon: 'home'
+              icon: 'home',
+              suma: this.establecimientos.length
+            };
+            this.cardItems.push(card);
+
+          }
+        }
+        if (retorno.Eventos){
+          if (retorno.Eventos.proposals){
+            this.eventos = retorno.Eventos.proposals;
+            var ultimo = this.eventos.pop();
+            var card = {
+              user: {
+                avatar: '',
+                name: 'Eventos'
+              },
+              date: ultimo.NombreUsuario,//poner la ultima fecha
+              image: '',
+              content: 'Existen ' + this.eventos.length + ' establecimientos creados.',
+              icon: 'home',
+              suma: this.eventos.length
+            };
+            this.cardItems.push(card);
+
+          }
+        }
+        if (retorno.Proyectos){
+          if (retorno.Proyectos.proposals){
+            this.proyectos = retorno.Proyectos.proposals;
+            var ultimo = this.proyectos.pop();
+            var card = {
+              user: {
+                avatar: '',
+                name: 'Proyectos'
+              },
+              date: ultimo.NombreUsuario,//poner la ultima fecha
+              image: '',
+              content: 'Existen ' + this.proyectos.length + ' establecimientos creados.',
+              icon: 'home',
+              suma: this.proyectos.length
+            };
+            this.cardItems.push(card);
+
+          }
+        }
+        if (retorno.Rendiciones){
+          if (retorno.Rendiciones.proposals){
+            this.rendiciones = retorno.Rendiciones.proposals;
+            var ultimo = this.rendiciones.pop();
+            var card = {
+              user: {
+                avatar: '',
+                name: 'Rendiciones'
+              },
+              date: ultimo.NombreUsuario,//poner la ultima fecha
+              image: '',
+              content: 'Existen ' + this.rendiciones.length + ' Rendiciones creadas.',
+              icon: 'home',
+              suma: this.rendiciones.length
             };
             this.cardItems.push(card);
 
