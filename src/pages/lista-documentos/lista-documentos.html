@@ -1,0 +1,48 @@
+<!--
+  Generated template for the ListaDocumentosPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'LISTADO_DOCUMENTOS_TITLE' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content>
+          
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list>
+        <ion-item-sliding *ngFor="let item of documentos">
+          <button ion-item (click)="openItem(item)">
+            <ion-avatar item-start>
+                <ion-icon name="{{item.Icono}}" style="font-size: 2em;"></ion-icon>
+            </ion-avatar>
+            <h2 text-wrap>{{item.NombreDocumento}}</h2>
+            <p>{{item.Fecha}}</p>
+            <!-- <ion-note item-end *ngIf="item.OtroUno">{{item.note}}</ion-note> -->
+          </button>
+    
+          <ion-item-options>
+            <button ion-button color="danger" (click)="descargar(item)">
+              {{ 'DOWNLOAD_BUTTON' | translate }}
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+
+
+</ion-content>
+<ion-fab top right right>
+    <button ion-fab mini (click)="doLogout()" color="danger">
+      <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-fab>

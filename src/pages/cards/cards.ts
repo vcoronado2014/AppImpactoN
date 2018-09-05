@@ -5,6 +5,9 @@ import { WelcomePage } from '../../pages/welcome/welcome'
 import { User } from '../../providers';
 import { Api } from '../../providers';
 import { TranslateService } from '@ngx-translate/core';
+//pages
+import { ListaDocumentosPage } from '../../pages/lista-documentos/lista-documentos';
+
 
 @IonicPage()
 @Component({
@@ -404,5 +407,12 @@ export class CardsPage {
     this.user.logout();
     sessionStorage.clear();
     this.navCtrl.setRoot(WelcomePage);
+  }
+  openPage(item){
+    switch(item.user.name){
+      case 'Documentos':
+        this.navCtrl.push(ListaDocumentosPage);
+        break;
+    }
   }
 }

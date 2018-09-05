@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { User } from '../../providers';
 import { MainPage } from '../';
-import { CardsPage } from '../../pages/cards/cards'
+import { CardsPage } from '../../pages/cards/cards';
 import { TranslateService } from '@ngx-translate/core';
 
 /**
