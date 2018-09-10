@@ -50,5 +50,7 @@
 
   "CARDS_TITLE": "Inicio",
 
-  "SEARCH_TITLE": "Buscar"
+  "SEARCH_TITLE": "Buscar",
+  "LISTADO_DOCUMENTOS_TITLE": "Documentos",
+  "DOWNLOAD_BUTTON": "Descargar"
 }

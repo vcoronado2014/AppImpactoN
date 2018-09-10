@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, LoadingController, Platform } from 'ionic-angular';
 import { WelcomePage } from '../../pages/welcome/welcome'
 import { User } from '../../providers';
 import { Api } from '../../providers';
 import { TranslateService } from '@ngx-translate/core';
 //descargas
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
+
 declare var cordova: any;
+import * as dl from '../../../node_modules/cordova-plugin-android-downloadmanager';
 
 /**
  * Generated class for the ListaDocumentosPage page.
@@ -24,10 +29,13 @@ export class ListaDocumentosPage {
 
   constructor(public navCtrl: NavController, public user: User, public api: Api, public toastCtrl: ToastController,
     public translateService: TranslateService, public loading: LoadingController,
-    private transfer: FileTransfer, private file: File) {
+    private document: DocumentViewer, private file: File, private transfer: FileTransfer, private platform: Platform,
+    private photoViewer: PhotoViewer) {
       //this.ionViewDidLoad();
+      //this.descargar('item');
 
   }
+
   mostrarMensaje(mensaje, duracion){
     let toast = this.toastCtrl.create({
       message: mensaje,
@@ -114,7 +122,8 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
             Fecha: retorno.proposals[i].NombreUsuario,
             Tamano: retorno.proposals[i].OtroUno,
             UrlGoogle: retorno.proposals[i].OtroDos,
-            UrlDescarga: retorno.proposals[i].Url
+            UrlDescarga: retorno.proposals[i].Url,
+            OtroTres: retorno.proposals[i].OtroTres
           };
           this.documentos.push(entidad);
 
@@ -144,6 +153,27 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
   }
   
   descargar(item){
+    var titulo = 'Descarga';
+    var descripcion = 'archivo asambleas';
+    var mime = 'application/zip';
+    var uri = item.Url;
+
+    if (item.OtroTres == '.JPG' || item.OtroTres == '.jpg'){
+      mime = 'image/jpeg';
+      this.openPhoto(item);
+    }
+    else if (item.OtroTres == '.PNG' || item.OtroTres == '.png'){
+      mime = 'image/bmp';
+      this.openPhoto(item);
+    }
+    else if (item.OtroTres == '.PDF' || item.OtroTres == '.pdf'){
+      mime = 'application/pdf';
+      this.downloadOpenPdf(item.UrlDescarga, mime, 'archivo.pdf');
+    }
+
+
+    
+    /*
     let filet = this.transfer.create();
     //var fileTransfer: FileTransferObject = this.transfer.create();
     //UrlDescarga
@@ -153,6 +183,68 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
     }, (error) => {
       // handle error
     });
+    */
+
+  }
+  openPhoto(item){
+    var options = {
+      share: true, // default is false
+      closeButton: true, // default is true
+      copyToReference: true // default is false
+  };
+  
+    this.photoViewer.show(item.UrlDescarga, 'Optional Title', options);
+  }
+  openLocalPdf(item) {
+    try {
+      const options: DocumentViewerOptions = {
+        title: 'My PDF'
+      }
+      this.document.viewDocument(item.UrlDescarga, 'application/pdf', options);
+    }
+    catch (error) {
+      this.mostrarMensaje(error, 3000);
+    }
+  }
+  downloadAndOpenPdf(item) {
+    try {
+      let path = null;
+
+      if (this.platform.is('ios')) {
+        path = this.file.documentsDirectory;
+      } else if (this.platform.is('android')) {
+        path = this.file.dataDirectory;
+      }
+
+      const transfer = this.transfer.create();
+      transfer.download(item.UrlDescarga, path + 'myfile.pdf').then(entry => {
+        let url = entry.toURL();
+        this.document.viewDocument(url, 'application/pdf', {});
+      });
+    }
+    catch (error) {
+      this.mostrarMensaje(error, 3000);
+    }
+  }
+  downloadOpenPdf(urlDescarga, mime, name) {
+    try {
+      let path = null;
+
+      if (this.platform.is('ios')) {
+        path = this.file.documentsDirectory;
+      } else if (this.platform.is('android')) {
+        path = this.file.dataDirectory;
+      }
+
+      const transfer = this.transfer.create();
+      transfer.download(urlDescarga, path + name).then(entry => {
+        let url = entry.toURL();
+        this.document.viewDocument(url, mime, {});
+      });
+    }
+    catch (error) {
+      this.mostrarMensaje(error, 3000);
+    }
   }
 
 }
