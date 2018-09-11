@@ -170,20 +170,22 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
       mime = 'application/pdf';
       this.downloadOpenPdf(item.UrlDescarga, mime, 'archivo.pdf');
     }
-
-
-    
-    /*
-    let filet = this.transfer.create();
-    //var fileTransfer: FileTransferObject = this.transfer.create();
-    //UrlDescarga
-    const url =item.UrlDescarga;
-    filet.download(url, cordova.file.dataDirectory + 'file.pdf').then((entry) => {
-      console.log('download complete: ' + entry.toURL());
-    }, (error) => {
-      // handle error
-    });
-    */
+    else if (item.OtroTres == '.DOCX' || item.OtroTres == '.docx'){
+      mime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoDoc.docx');
+    }
+    else if (item.OtroTres == '.DOC' || item.OtroTres == '.doc'){
+      mime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoDoc.doc');
+    }
+    else if (item.OtroTres == '.XLSX' || item.OtroTres == '.xlsx'){
+      mime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoExcel.xlsx');
+    }
+    else if (item.OtroTres == '.XLS' || item.OtroTres == '.xls'){
+      mime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoExcel.xls');
+    }
 
   }
   openPhoto(item){
@@ -193,7 +195,7 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
       copyToReference: true // default is false
   };
   
-    this.photoViewer.show(item.UrlDescarga, 'Optional Title', options);
+    this.photoViewer.show(item.UrlDescarga, item.NombreCompleto, options);
   }
   openLocalPdf(item) {
     try {

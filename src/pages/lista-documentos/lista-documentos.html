@@ -23,9 +23,13 @@
     <ion-list>
         <ion-item-sliding *ngFor="let item of documentos">
           <button ion-item (click)="openItem(item)">
-            <ion-avatar item-start>
-                <ion-icon name="{{item.Icono}}" style="font-size: 2em;"></ion-icon>
+            <ion-avatar item-start *ngIf="item.Icono == 'image'">
+<!--                 <ion-icon name="{{item.Icono}}" style="font-size: 2em;"></ion-icon> -->
+                <img src="{{item.UrlDescarga}}">
             </ion-avatar>
+            <ion-avatar item-start *ngIf="item.Icono == 'document'">
+              <ion-icon name="{{item.Icono}}" style="font-size: 2em;"></ion-icon>
+          </ion-avatar>
             <h2 text-wrap>{{item.NombreDocumento}}</h2>
             <p>{{item.Fecha}}</p>
             <!-- <ion-note item-end *ngIf="item.OtroUno">{{item.note}}</ion-note> -->
