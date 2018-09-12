@@ -7,11 +7,11 @@ import { TranslateService } from '@ngx-translate/core';
 //descargas
 import { File } from '@ionic-native/file';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
-import { FileTransfer } from '@ionic-native/file-transfer';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 declare var cordova: any;
-import * as dl from '../../../node_modules/cordova-plugin-android-downloadmanager';
+
 
 /**
  * Generated class for the ListaDocumentosPage page.
@@ -151,7 +151,28 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
 
     return seq;
   }
-  
+  descargarDoc(item){
+    const fileTransfer: FileTransferObject = this.transfer.create();  
+    var uri = encodeURI(item.UrlDescarga);
+    let path = null;
+
+    if (this.platform.is('ios')) {
+      //path = this.file.documentsDirectory;
+      path = cordova.file.documentsDirectory;
+    } else if (this.platform.is('android')) {
+      //path = this.file.dataDirectory;
+      path = cordova.file.documentsDirectory;
+    }
+
+    fileTransfer.download(uri, path + item.NombreDocumento).then((entry) => {
+      //show toast message as success
+     this.mostrarMensaje('download complete: ' + entry.toURL(), 4000);    
+    }, (error) => {
+      //show toast message as error    
+      this.mostrarMensaje(error, 3000);    
+    });
+  }
+
   descargar(item){
     var titulo = 'Descarga';
     var descripcion = 'archivo asambleas';
@@ -171,20 +192,25 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
       this.downloadOpenPdf(item.UrlDescarga, mime, 'archivo.pdf');
     }
     else if (item.OtroTres == '.DOCX' || item.OtroTres == '.docx'){
-      mime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoDoc.docx');
+      mime = 'application/msword';
+      //this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoDoc.docx');
+      this.descargarDoc(item);
     }
     else if (item.OtroTres == '.DOC' || item.OtroTres == '.doc'){
-      mime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoDoc.doc');
+      mime = 'application/msword';
+      //this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoDoc.doc');
+      this.descargarDoc(item);
     }
     else if (item.OtroTres == '.XLSX' || item.OtroTres == '.xlsx'){
-      mime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-      this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoExcel.xlsx');
+      mime = 'application/vnd.ms-excel';
+      //this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoExcel.xlsx');
+      this.descargarDoc(item);
+      //window.open(item.urlDescarga, 'download');
     }
     else if (item.OtroTres == '.XLS' || item.OtroTres == '.xls'){
-      mime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      mime = 'application/vnd.ms-excel';
       this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoExcel.xls');
+      //this.descargarDoc(item);
     }
 
   }
@@ -213,9 +239,11 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
       let path = null;
 
       if (this.platform.is('ios')) {
-        path = this.file.documentsDirectory;
+        //path = this.file.documentsDirectory;
+        path = cordova.file.documentsDirectory;
       } else if (this.platform.is('android')) {
-        path = this.file.dataDirectory;
+        //path = this.file.dataDirectory;
+        path = cordova.file.dataDirectory;
       }
 
       const transfer = this.transfer.create();
@@ -231,17 +259,26 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
   downloadOpenPdf(urlDescarga, mime, name) {
     try {
       let path = null;
+      let pathName = null;
 
       if (this.platform.is('ios')) {
-        path = this.file.documentsDirectory;
+        //path = this.file.documentsDirectory;
+        path = cordova.file.documentsDirectory;
       } else if (this.platform.is('android')) {
-        path = this.file.dataDirectory;
+        //path = this.file.dataDirectory;
+        path = cordova.file.dataDirectory;
       }
 
+      pathName = path + name;
       const transfer = this.transfer.create();
-      transfer.download(urlDescarga, path + name).then(entry => {
+      transfer.download(urlDescarga, pathName, true).then(entry => {
+        //this.mostrarMensaje(pathName, 4000);
         let url = entry.toURL();
+        //this.mostrarMensaje(url, 4000);
         this.document.viewDocument(url, mime, {});
+      }, (error) => {
+        //show toast message as error    
+        this.mostrarMensaje(error, 3000);    
       });
     }
     catch (error) {
