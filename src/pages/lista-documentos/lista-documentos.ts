@@ -27,6 +27,8 @@ declare var cordova: any;
 export class ListaDocumentosPage {
   documentos: any[];
 
+  private fileTransfer: FileTransferObject;  
+
   constructor(public navCtrl: NavController, public user: User, public api: Api, public toastCtrl: ToastController,
     public translateService: TranslateService, public loading: LoadingController,
     private document: DocumentViewer, private file: File, private transfer: FileTransfer, private platform: Platform,
@@ -151,6 +153,25 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
 
     return seq;
   }
+
+  downloadDoc(item, mime){
+        //here encoding path as encodeURI() format.  
+        let url = encodeURI(item.UrlDescarga);  
+        //here initializing object.  
+        this.fileTransfer = this.transfer.create();  
+        // here iam mentioned this line this.file.externalRootDirectory is a native pre-defined file path storage. You can change a file path whatever pre-defined method.  
+        this.fileTransfer.download(url, this.file.externalRootDirectory + item.NombreDocumento, true).then((entry) => {  
+            //here logging our success downloaded file path in mobile.  
+            console.log('download completed: ' + entry.toURL());  
+            this.document.viewDocument(url, mime, {});
+            this.mostrarMensaje(entry.toURL(), 5000);
+        }, (error) => {  
+            //here logging our error its easier to find out what type of error occured.  
+            console.log('download failed: ' + error);
+            this.mostrarMensaje(error, 5000);  
+        });  
+  }
+
   descargarDoc(item){
     const fileTransfer: FileTransferObject = this.transfer.create();  
     var uri = encodeURI(item.UrlDescarga);
@@ -204,7 +225,7 @@ Url:"http://apps.asambleas.cl/Repositorio/calendario_1.PNG"
     else if (item.OtroTres == '.XLSX' || item.OtroTres == '.xlsx'){
       mime = 'application/vnd.ms-excel';
       //this.downloadOpenPdf(item.UrlDescarga, mime, 'archivoExcel.xlsx');
-      this.descargarDoc(item);
+      this.downloadDoc(item, mime);
       //window.open(item.urlDescarga, 'download');
     }
     else if (item.OtroTres == '.XLS' || item.OtroTres == '.xls'){

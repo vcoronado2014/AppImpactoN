@@ -17,7 +17,7 @@ import { CardsPage } from '../pages/cards/cards';
 import { ListaDocumentosPage } from '../pages/lista-documentos/lista-documentos';
 
 import { File } from '@ionic-native/file';
-import { FileTransfer } from '@ionic-native/file-transfer';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { DocumentViewer } from '@ionic-native/document-viewer';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 
@@ -77,6 +77,7 @@ export function provideSettings(storage: Storage) {
     File,
     DocumentViewer,
     FileTransfer,
+    FileTransferObject,
     PhotoViewer,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
