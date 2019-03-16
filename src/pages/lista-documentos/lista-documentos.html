@@ -19,7 +19,14 @@
           
         </ion-refresher-content>
     </ion-refresher>
-
+    <ion-row>
+      <ion-col>
+        Presiona el botón "Nuevo" para subir un nuevo archivo.
+      </ion-col>
+      <ion-col>
+        
+      </ion-col>
+    </ion-row>
     <ion-list>
         <ion-item-sliding *ngFor="let item of documentos">
           <button ion-item (click)="openItem(item)">
